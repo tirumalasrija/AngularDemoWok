@@ -1,0 +1,96 @@
+﻿<h1 *ngIf="isAddMode">Add User</h1>
+<h1 *ngIf="!isAddMode">Edit User</h1>
+
+
+<mat-card>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+
+            <mat-form-field appearance="fill">
+              <mat-label>Title</mat-label>
+              <select formControlName="title" matNativeControl [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
+                <option value=""></option>
+                <option value="Mr">Mr</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Miss">Miss</option>
+                <option value="Ms">Ms</option>
+              </select>
+            </mat-form-field>
+
+
+            <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                <div *ngIf="f.title.errors.required">Title is required</div>
+            </div>
+
+
+          <mat-form-field class="example-full-width">
+            <mat-label>First Name</mat-label>
+            <input formControlName="firstName" matInput placeholder="First Name"  [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
+          </mat-form-field>
+            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                <div *ngIf="f.firstName.errors.required">First Name is required</div>
+            </div>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Last Name</mat-label>
+            <input formControlName="lastName" matInput placeholder="Last Name" formControlName="lastName"  [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+          </mat-form-field>
+            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+            </div>
+            <br>
+            <mat-form-field appearance="fill">
+              <mat-label>Role</mat-label>
+              <select formControlName="role" matNativeControl [ngClass]="{ 'is-invalid': submitted && f.role.errors }">
+                <option value=""></option>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </mat-form-field>
+
+              <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+                  <div *ngIf="f.role.errors.required">Role is required</div>
+              </div>
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input formControlName="email" matInput placeholder="Email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+        </mat-form-field>
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">Email is required</div>
+                <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+            </div>
+
+
+            <br>
+    <div *ngIf="!isAddMode">
+        <h3 class="pt-3">Change Password</h3>
+        <p>Leave blank to keep the same password</p>
+    </div>
+
+
+            <mat-form-field class="example-full-width">
+              <mat-label>Password</mat-label>
+              <input type="password" formControlName="password" matInput [ngClass]="{ 'is-invalid': submitted && f.password.errors }" >
+            </mat-form-field>
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">Password is required</div>
+                <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+            </div>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Confirm Password</mat-label>
+            <input type="password" formControlName="confirmPassword" matInput [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+          </mat-form-field>
+            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+                <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+            </div>
+            <br>
+        <button [disabled]="loading" mat-raised-button>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+        </button>
+        <a mat-raised-button routerLink="/users" >Cancel</a>
+
+</form>
+</mat-card>

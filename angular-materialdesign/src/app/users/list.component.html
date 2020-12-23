@@ -1,0 +1,37 @@
+﻿<div class="example-container mat-elevation-z8">
+
+
+  <mat-table #table [dataSource]="users">
+
+
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.title}} {{element.firstName}} {{element.lastName}} </mat-cell>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.role}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let user">  <a routerLink="edit/{{user.id}}" mat-raised-button>Edit</a>
+        <button (click)="deleteUser(user.id)" mat-raised-button >
+            <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
+            <span >Delete</span>
+        </button> </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

@@ -1,0 +1,17 @@
+﻿
+<button mat-button [routerLink] = "['/']"><mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>Home</button>
+<button mat-button [matMenuTriggerFor]="belowMenu"><mat-icon aria-hidden="false" aria-label="Example user icon">user</mat-icon>Users</button>
+<mat-menu #belowMenu="matMenu" yPosition="below">
+  <button mat-menu-item  [routerLink] = "['/users/add']">Add User</button>
+  <button mat-menu-item  [routerLink] = "['/users']">User List</button>
+</mat-menu>
+
+
+
+
+<mat-card class="mat-card-cvr">
+  <alert></alert>
+  <router-outlet></router-outlet>
+</mat-card>
+<mat-divider></mat-divider>
+<mat-card class="mat-card-sample mat-card-cvr">Webmobilez</mat-card>

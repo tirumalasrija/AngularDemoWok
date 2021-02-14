@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ConsultantListComponent } from './submission-list/consultant-list.component';
+import { SubmissionListComponent } from './submission-list/submission-list.component';
 
 import {ClientsListComponent} from './clients-list/clients-list.component';
 import {CompaniesListComponent} from './companies-list/companies-list.component';
@@ -10,7 +10,7 @@ import {UserCreateComponent} from './user-create/user-create.component';
 export const consultantsRoutes: Routes = [
   {
     path: '',
-    component: ConsultantListComponent
+    component: SubmissionListComponent
   },
   {
     path: 'list',

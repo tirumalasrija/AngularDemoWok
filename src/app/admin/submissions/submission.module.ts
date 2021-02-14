@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { consultantsRoutes } from  './consultants-routing.module'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ButtonsModule, InputUtilitiesModule, InputsModule, MDBBootstrapModule } from 'angular-bootstrap-md';
-import { ConsultantListComponent } from './submission-list/consultant-list.component';
+import { SubmissionListComponent } from './submission-list/submission-list.component';
 import {ClientsListComponent} from './clients-list/clients-list.component';
 import {ContactsListComponent} from './contacts-list/contacts-list.component';
 import {CompaniesListComponent} from './companies-list/companies-list.component';
@@ -45,7 +45,7 @@ import { UserRestService } from './user-rest.service';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {FieldPipe3} from '../../field3.pipe';
  @NgModule({
-  declarations: [ConsultantListComponent,CompaniesListComponent,ClientsListComponent,ContactsListComponent,UserListComponent,UserCreateComponent,FieldPipe3],
+  declarations: [SubmissionListComponent,CompaniesListComponent,ClientsListComponent,ContactsListComponent,UserListComponent,UserCreateComponent,FieldPipe3],
   imports: [
     CommonModule,
     ReactiveFormsModule,

@@ -15,6 +15,12 @@ export class CustomerService {
       .then(res => <Consultant[]>res.consultants)
       .then(data => { return data; });
   }
+  getDocumentConsultants() {
+    return this.http.get<any>(`${environment.api}/api/consultants`)
+      .toPromise()
+      .then(res => <Consultant[]>res.consultants)
+      .then(data => { return data; });
+  }
   getHotlistConsultants() {
     return this.http.get<any>(`${environment.api}/api/getHotList`)
       .toPromise()

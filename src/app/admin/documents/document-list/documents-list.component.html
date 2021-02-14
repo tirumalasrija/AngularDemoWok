@@ -1,265 +1,5 @@
 <p-toast></p-toast>
 <!-- prime table-->
-<div class="card">
-  <!-- <p-messages [value]="msgs"></p-messages> -->
-  <p-table #dt1 [value]="consultants" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[5,10,50]" [loading]="loading" [rowHover]="true" [autoLayout]="true "
-    [filterDelay]="0" [globalFilterFields]="['consultatName']"  [reorderableColumns]="true"
-    styleClass="p-datatable-consultants  p-datatable-gridlines " [paginator]="true"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} consultants"
-    [globalFilterFields]="['name','user.name','technology.name','consultant_status']">
-
-    <ng-template pTemplate="caption">
-
-      <div class="p-d-flex">
-        <button pButton label="Clear" class="p-button-outlined p-mr-4" icon="pi pi-filter-slash"
-          (click)="clear(dt1)"></button>
-        <div class=" p-d-flex p-ai-center p-jc-between">Consultant Documents</div>
-
-        <span class="p-input-icon-left p-ml-auto">
-          <i class="pi pi-search"></i>
-          <input pInputText type="text" class="p-mr-4" (input)="dt1.filterGlobal($event.target.value, 'contains')"
-            placeholder="Search keyword" />
-        </span>
-        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
-          (click)="openNew()"></button>
-      </div>
-    </ng-template>
-    <!-- <ng-template pTemplate="colgroup">
-    <colgroup>
-        <col style="width:13%">
-        <col style="width:15%">
-        <col style="width:20%">
-        <col style="width:15%">
-        <col style="width:25%">
-        <col style="width:13%">
-        <col style="width:25%">
-        <col style="width:10%">
-        <col style="width:10%">
-    </colgroup>
-</ng-template> -->
-    <ng-template pTemplate="header">
-      <tr>
-
-        <th >
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Submissions
-          </div>
-        </th>
-        <th >
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Days in Bench
-          </div>
-        </th>
-        <th >
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Name
-            <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
-          </div>
-        </th>
-        <th>
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Email
-            <p-columnFilter type="text" field="consultant_email" display="menu"></p-columnFilter>
-          </div>
-        </th>
-        <th>
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Phone Number
-            <p-columnFilter type="text" field="consultant_email" display="menu"></p-columnFilter>
-          </div>
-        </th>
-        <th>
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Technology
-            <p-columnFilter field="technologies" matchMode="in" display="menu" [showMatchModes]="false"
-              [showOperator]="false" [showAddButton]="false">
-              <ng-template pTemplate="header">
-                <div class="p-px-3 p-pt-3 p-pb-0">
-                  <span class="p-text-bold">Choose Technology</span>
-                </div>
-              </ng-template>
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                <p-multiSelect [ngModel]="value" [options]="technologiesforflter" placeholder="Any"
-                  (onChange)="filter($event.value)" optionLabel="name">
-                  <ng-template let-option pTemplate="item">
-                    <div class="p-multiselect-representative-option">
-                      <span class="p-ml-1">{{option.name}}</span>
-                    </div>
-                  </ng-template>
-                </p-multiSelect>
-              </ng-template>
-            </p-columnFilter>
-          </div>
-        </th>
-        <th >
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Visa Type
-            <p-columnFilter type="text" field="visaType" display="menu"></p-columnFilter>
-          </div>
-        </th>
-        <th >
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Rate
-            <p-columnFilter type="numeric" field="rate" display="menu" currency="USD"></p-columnFilter>
-          </div>
-        </th>
-        <th >
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Experience
-            <p-columnFilter type="numeric" field="experience" display="menu"></p-columnFilter>
-          </div>
-        </th>
-        <th >
-          <div class="p-d-flex p-jc-between p-ai-center">
-            SSN
-            <p-columnFilter type="numeric" field="state" display="menu"></p-columnFilter>
-          </div>
-        </th>
-        <th >
-          <div class="p-d-flex p-jc-between p-ai-center">
-            City
-            <p-columnFilter type="text" field="city" display="menu"></p-columnFilter>
-          </div>
-        </th>
-        <th >
-          <div class="p-d-flex p-jc-between p-ai-center">
-            State
-            <p-columnFilter type="text" field="state" display="menu"></p-columnFilter>
-          </div>
-        </th>
-        <th>
-          <div class="p-d-flex p-jc-between p-ai-center">
-            Status
-            <p-columnFilter field="consultant_status" matchMode="equals" display="menu">
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
-                  <ng-template let-option pTemplate="item">
-                    <span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
-                  </ng-template>
-                </p-dropdown>
-              </ng-template>
-            </p-columnFilter>
-          </div>
-        </th>
-
-
-
-
-
-
-        <!-- <th>
-              <div class="p-d-flex p-jc-between p-ai-center">
-                Activity
-                <p-columnFilter field="activity" matchMode="between" display="menu" [showMatchModes]="false"
-                  [showOperator]="false" [showAddButton]="false">
-                  <ng-template pTemplate="filter" let-filter="filterCallback">
-                    <p-slider [ngModel]="activityValues" [range]="true" (onSlideEnd)="filter($event.values)"
-                      styleClass="p-m-3"></p-slider>
-                    <div class="p-d-flex p-ai-center p-jc-between p-px-2">
-                      <span>{{activityValues[0]}}</span>
-                      <span>{{activityValues[1]}}</span>
-                    </div>
-                  </ng-template>
-                </p-columnFilter>
-              </div>
-            </th> -->
-        <!--  <th style="width: 8rem">
-            <div class="p-d-flex p-jc-between p-ai-center">
-              Verified
-              <p-columnFilter type="boolean" field="verified" display="menu"></p-columnFilter>
-            </div>
-          </th> -->
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-consultant let-expanded="expanded">
-      <tr>
-
-        <td>
-          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
-            (click)="editProduct(consultant)"></button>
-          <!--  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-          (click)="deleteProduct(consultant)"></button> -->
-
-          <span *ngIf="consultant.priority=='High'">
-            <button pButton pRipple data-toggle="tooltip" title="{{consultant.priority}} Priority" icon="pi pi-star"
-              class="btn-length p-button-rounded p-button-warning"
-              style="color:Green;background:#fff;border: none;"></button>
-          </span>
-          <span *ngIf="consultant.priority=='Medium'">
-            <button pButton pRipple data-toggle="tooltip" title="{{consultant.priority}} Priority" icon="pi pi-star"
-              class="btn-length p-button-rounded p-button-warning"
-              style="color:#ffc107;background:#fff;border: none;"></button>
-          </span>
-          <span *ngIf="consultant.priority=='Low'">
-            <button pButton pRipple data-toggle="tooltip" title="{{consultant.priority}} Priority" icon="pi pi-star"
-              class="btn-length p-button-rounded p-button-warning"
-              style="color:red;background:#fff;border: none;"></button>
-          </span>
-
-
-
-        </td>
-        <td>
-          <span><a href="https://portal.webmobilez.com/storage/app/uploads/resume/{{consultant.resume}}" download><img src="../../../../assets/img/word.png"></a>
-            <a href="https://portal.webmobilez.com/storage/app/uploads/otherDocument/{{consultant.otherDocument}}" download><img src="../../../../assets/img/idcard.png"></a>
-            <a href="https://portal.webmobilez.com/storage/app/uploads/workauthorization/{{consultant.workAuthorization}}" download><img src="../../../../assets/img/suitcase.png"></a><br>
-            {{consultant.user.name}}<br>
-            {{consultant.created_at | date: 'MM/dd/yyyy'}}</span>
-        </td>
-        <td>
-          {{consultant.name}}
-        </td>
-
-        <td class="ui-resizable-column">
-          <span class="image-text">{{consultant.consultant_email}}</span>
-        </td>
-        <td>
-          {{consultant.consultant_mobile_number}}
-        </td>
-        <td>
-          <span class="image-text">{{consultant.technologies.name}}</span>
-        </td>
-        <td>
-          {{consultant.visaType }}
-        </td>
-        <td>
-          {{consultant.rate | currency:'USD':'symbol'}}
-        </td>
-        <td>
-          {{consultant.experience}}
-        </td>
-        <td>
-          {{consultant.ssn}}
-        </td>
-        <td>
-          {{consultant.city}}
-        </td>
-        <td>
-          {{consultant.state}}
-        </td>
-        <td>
-          <span
-            [class]="'customer-badge status-' + consultant.consultant_status">{{consultant.consultant_status}}</span>
-        </td>
-
-        <!-- <td>
-              <p-progressBar [value]="customer.activity" [showValue]="false"></p-progressBar>
-            </td> -->
-        <!--   <td class="p-text-center">
-          <i class="pi"
-              [ngClass]="{'true-icon pi-check-circle': customer.verified, 'false-icon pi-times-circle': !customer.verified}"></i>
-          </td> -->
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="7">No Documents found.</td>
-      </tr>
-    </ng-template>
-
-  </p-table>
-</div>
 <p-dialog [(visible)]="consultantDialog" [style]="{width: '50vw'}" [baseZIndex]="10000" header="Consultant Details"
   [modal]="true" styleClass="p-fluid">
 
@@ -296,16 +36,16 @@
           <!-- <p-dropdown [options]="technologies" formControlName="technology_id" optionLabel="name"
             optionValue="technology_id">
           </p-dropdown> -->
-          <p-dropdown  [options]="technologies"  formControlName="technology_id"
-          [style]="{'width':'100%'}" scrollHeight="400px" filter="true" filterBy="name,technology_id"
-          resetFilterOnHide="true" >
-        </p-dropdown>
-        <div *ngIf="technology_id.invalid && (technology_id.dirty || technology_id.touched)" class="form-text text-muted">
-          <div *ngIf="technology_id.errors?.required">
-            Technology is required.
-          </div>
+          <p-dropdown [options]="technologies" formControlName="technology_id" [style]="{'width':'100%'}"
+            scrollHeight="400px" filter="true" filterBy="name,technology_id" resetFilterOnHide="true">
+          </p-dropdown>
+          <div *ngIf="technology_id.invalid && (technology_id.dirty || technology_id.touched)"
+            class="form-text text-muted">
+            <div *ngIf="technology_id.errors?.required">
+              Technology is required.
+            </div>
 
-        </div>
+          </div>
         </div>
         <div class="p-field p-col-4">
           <label for="Visa">Visa Type:</label>
@@ -415,7 +155,242 @@
 
 
 </p-dialog>
-
-
 <p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" [position]="position" [baseZIndex]="10000">
 </p-confirmDialog>
+<p-table [value]="consultants" dataKey="name" [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,50]"
+  [autoLayout]="true" [loading]="loading" [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} consultants">
+  <ng-template pTemplate="caption">
+
+    <div class="p-d-flex">
+
+      <div class=" p-d-flex p-ai-center p-jc-between">Consultant Documents</div>
+
+
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 1rem"></th>
+      <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon>
+      </th>
+      <th pSortableColumn="consultant_status">Status <p-sortIcon field="consultant_status"></p-sortIcon>
+      </th>
+      <th pSortableColumn="consultant_email">Email <p-sortIcon field="consultant_email"></p-sortIcon>
+      </th>
+      <th pSortableColumn="consultant_mobile_number">Mobile Number <p-sortIcon field="consultant_mobile_number">
+        </p-sortIcon>
+      </th>
+      <th pSortableColumn="visaType">Visa Type <p-sortIcon field="visaType"></p-sortIcon>
+      </th>
+      <th pSortableColumn="visaType">Visa Type <p-sortIcon field="visaType"></p-sortIcon>
+      </th>
+
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Days in Bench
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Name
+          <p-columnFilter type="text" field="name" display="menu"></p-columnFilter>
+        </div>
+      </th>
+
+
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Status
+          <p-columnFilter field="consultant_status" matchMode="equals" display="menu">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
+                <ng-template let-option pTemplate="item">
+                  <span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+                </ng-template>
+              </p-dropdown>
+            </ng-template>
+          </p-columnFilter>
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Email
+          <p-columnFilter type="text" field="consultant_email" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Phone Number
+          <p-columnFilter type="text" field="consultant_email" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Technology
+          <p-columnFilter field="technologies" matchMode="in" display="menu" [showMatchModes]="false"
+            [showOperator]="false" [showAddButton]="false">
+            <ng-template pTemplate="header">
+              <div class="p-px-3 p-pt-3 p-pb-0">
+                <span class="p-text-bold">Choose Technology</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <p-multiSelect [ngModel]="value" [options]="technologiesforflter" placeholder="Any"
+                (onChange)="filter($event.value)" optionLabel="name">
+                <ng-template let-option pTemplate="item">
+                  <div class="p-multiselect-representative-option">
+                    <span class="p-ml-1">{{option.name}}</span>
+                  </div>
+                </ng-template>
+              </p-multiSelect>
+            </ng-template>
+          </p-columnFilter>
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Visa Type
+          <p-columnFilter type="text" field="visaType" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Rate
+          <p-columnFilter type="numeric" field="rate" display="menu" currency="USD"></p-columnFilter>
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          Exp
+          <p-columnFilter type="numeric" field="experience" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th>
+        <div class="p-d-flex p-jc-between p-ai-center">
+          SSN
+          <p-columnFilter type="numeric" field="state" display="menu"></p-columnFilter>
+        </div>
+      </th>
+
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-consultant let-expanded="expanded">
+    <tr>
+      <td>
+        <button type="button" pButton pRipple [pRowToggler]="consultant"
+          class="p-button-text p-button-rounded p-button-plain"
+          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+
+      </td>
+
+      <td>
+
+        <!--  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+      (click)="deleteProduct(consultant)"></button> -->
+
+        <span *ngIf="consultant.priority=='High'">
+          <button pButton pRipple data-toggle="tooltip" title="{{consultant.priority}} Priority" icon="pi pi-star"
+            class="btn-length p-button-rounded p-button-warning"
+            style="color:Green;background:#fff;border: none;"></button>
+        </span>
+        <span *ngIf="consultant.priority=='Medium'">
+          <button pButton pRipple data-toggle="tooltip" title="{{consultant.priority}} Priority" icon="pi pi-star"
+            class="btn-length p-button-rounded p-button-warning"
+            style="color:#ffc107;background:#fff;border: none;"></button>
+        </span>
+        <span *ngIf="consultant.priority=='Low'">
+          <button pButton pRipple data-toggle="tooltip" title="{{consultant.priority}} Priority" icon="pi pi-star"
+            class="btn-length p-button-rounded p-button-warning"
+            style="color:red;background:#fff;border: none;"></button>
+        </span>
+        <span>
+          {{consultant.user.name}}<br>
+          {{consultant.created_at | date: 'MM/dd/yyyy'}}</span>
+      </td>
+      <td>
+        {{consultant.name}}
+      </td>
+      <td>
+        <span [class]="'customer-badge status-' + consultant.consultant_status">{{consultant.consultant_status}}</span>
+      </td>
+      <td class="ui-resizable-column">
+        <span class="image-text">{{consultant.consultant_email}}</span>
+      </td>
+      <td>
+        {{consultant.consultant_mobile_number}}
+      </td>
+      <td>
+        <span class="image-text">{{consultant.technologies.name}}</span>
+      </td>
+      <td>
+        {{consultant.visaType }}
+      </td>
+      <td>
+        {{consultant.rate | currency:'USD':'symbol'}}
+      </td>
+      <td>
+        {{consultant.experience}}
+      </td>
+      <td>
+        {{consultant.ssn}}
+      </td>
+
+
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="rowexpansion" let-product>
+    <tr>
+      <td colspan="12">
+        <div class="p-p-3">
+          <p-table [value]="product.submissions" dataKey="id">
+            <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="user_details.name">Created By <p-sortIcon field="user_details.name"></p-sortIcon>
+      </th>
+      <th pSortableColumn="contact_list.companies.name">Vendor Company <p-sortIcon field="contact_list.companies.name">
+        </p-sortIcon>
+      </th>
+      <th pSortableColumn="contact_list.contactName">Vendor Contact Name <p-sortIcon field="contact_list.contactName">
+        </p-sortIcon>
+      </th>
+      <th pSortableColumn="clients.name">End Client <p-sortIcon field="clients.name"></p-sortIcon>
+      </th>
+      <th pSortableColumn="submissionRate">Submission Rate<p-sortIcon field="submissionRate"></p-sortIcon>
+      </th>
+      <th pSortableColumn="submissionStatus">Submission Status<p-sortIcon field="submissionStatus"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-submission>
+    <tr>
+      <td>{{submission.user_details.name}}</td>
+
+      <td>{{submission.contact_list.companies.name}}</td>
+
+      <td>{{submission.contact_list.contactName}}</td>
+      <td>{{submission.clients.name}}</td>
+      <td>{{submission.submissionRate}}</td>
+      <td>{{submission.submissionStatus}}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="12">There are no submissions for this Consultant yet.</td>
+    </tr>
+  </ng-template>
+</p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>

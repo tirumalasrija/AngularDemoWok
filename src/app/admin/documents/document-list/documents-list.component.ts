@@ -13,9 +13,23 @@ import { ConfirmationService } from 'primeng/api';
 import { Message } from 'primeng/api';
 import {SelectItem} from 'primeng/api';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { trigger,state,style,transition,animate } from '@angular/animations';
 @Component({
   selector: 'app-documents-list',
   templateUrl: './documents-list.component.html',
+  animations: [
+    trigger('rowExpansionTrigger', [
+        state('void', style({
+            transform: 'translateX(-10%)',
+            opacity: 0
+        })),
+        state('active', style({
+            transform: 'translateX(0)',
+            opacity: 1
+        })),
+        transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+    ])
+],
   styleUrls: ['./documents-list.component.scss']
 })
 export class DocumentListComponent implements OnInit {
@@ -105,7 +119,7 @@ export class DocumentListComponent implements OnInit {
       'otherDocument': new FormControl(null),
       'workAuthorization': new FormControl(null)
     })
-    this.consultantService.getCustomersLarge().then(consultants => {
+    this.consultantService.getDocumentConsultants().then(consultants => {
       this.consultants = consultants;
       this.loading = false;
 

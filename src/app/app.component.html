@@ -1,0 +1,118 @@
+<!--Navbar-->
+<!--
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark cyan" [containerInside]="false">
+    <mdb-navbar-brand><a class="navbar-brand" href="#"><img src="https://portal.webmobilez.com/assets/img/group.png"/></a></mdb-navbar-brand>
+    <links>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a [routerLink]="[ '/login' ]" *ngIf="!(isAuthnoticated | async).authonticated" class="nav-link waves-light" mdbWavesEffect>Login</a>
+        </li>
+
+        <li class="nav-item">
+          <a [routerLink]="[ '/register' ]" *ngIf="!(isAuthnoticated | async).authonticated" class="nav-link waves-light" mdbWavesEffect>Register</a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="[ '/consultants' ]" *ngIf="(isAuthnoticated | async).authonticated" class="nav-link waves-light" mdbWavesEffect>Consultants</a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="[ '/consultants/technologies' ]" *ngIf="(isAuthnoticated | async).authonticated" class="nav-link waves-light" mdbWavesEffect>Technologies</a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="[ '/home' ]" *ngIf="(isAuthnoticated | async).authonticated" class="nav-link waves-light" mdbWavesEffect>Home</a>
+        </li>
+      </ul>
+    </links>
+  </mdb-navbar>
+-->
+
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark cyan" [containerInside]="false">
+
+  <!-- Navbar brand -->
+  <mdb-navbar-brand><a class="navbar-brand" [routerLink]="[ '/home' ]"><img width="169px"
+        src="https://webmobilez.com/wp-content/themes/webmobilez/images/logo_white.svg" /></a></mdb-navbar-brand>
+
+  <!-- Collapsible content -->
+  <links>
+
+    <!-- Links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a [routerLink]="[ '/login' ]" *ngIf="!(isAuthnoticated | async).authonticated" class="nav-link waves-light"
+          mdbWavesEffect>Login</a>
+      </li>
+
+
+
+      <li class="nav-item dropdown" *ngIf="(isAuthnoticated | async).authonticated" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+          <mdb-icon fas icon="envelope"></mdb-icon> Consultants<span class="caret"></span>
+        </a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/consultants/list' ]">Consultant List</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect
+            [routerLink]="[ '/consultants/technologies' ]">Technologies</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/consultants/hotlist' ]">Hot list</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown" *ngIf="(isAuthnoticated | async).authonticated" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+          <mdb-icon fas icon="file"></mdb-icon> Consultant Documents<span class="caret"></span>
+        </a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/documents/list' ]">Documents List</a>
+
+        </div>
+      </li>
+      <li class="nav-item dropdown" *ngIf="(isAuthnoticated | async).authonticated" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+          <mdb-icon fas icon="desktop"></mdb-icon> Vendor Submissions<span class="caret"></span>
+        </a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/submissions' ]">Submissions
+            List</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/submissions/clients' ]">Clients List</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/submissions/companies' ]">Vendors Company
+            List</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/submissions/contacts' ]">Vendors Contact
+            List</a>
+
+        </div>
+      </li>
+      <li class="nav-item dropdown" *ngIf="(isAuthnoticated | async).authonticated" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+          <mdb-icon fas icon="user"></mdb-icon> Users<span class="caret"></span>
+        </a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/documents/list' ]">Users List</a>
+
+
+        </div>
+      </li>
+      <!-- Dropdown -->
+      <li class="nav-item dropdown" *ngIf="(isAuthnoticated | async).authonticated" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+          <mdb-icon fas icon="user"></mdb-icon> Profile<span class="caret"></span>
+        </a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect href="#">My Profile</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Log out</a>
+        </div>
+      </li>
+
+    </ul>
+    <!-- Links -->
+  </links>
+  <!-- Collapsible content -->
+
+</mdb-navbar>
+<!--/.Navbar-->
+<!--/.Navbar-->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <router-outlet></router-outlet>
+      <!-- prime table-->
+    </div>
+  </div>
+</div>

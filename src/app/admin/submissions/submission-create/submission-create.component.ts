@@ -4,18 +4,18 @@ import { SelectItem } from 'primeng/api';
 import { SelectItemGroup } from 'primeng/api';
 import { FormGroup, FormControlName, Validators, FormControl } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { UserRestService} from '../user-rest.service';
+import { SubmissionRestService} from '../submission-rest.service';
 export class Profile {
   constructor(public prId: string, public prName: string) {
   }
 }
 @Component({
-  selector: 'app-user-create',
-  templateUrl: './user-create.component.html',
+  selector: 'app-submission-create',
+  templateUrl: './submission-create.component.html',
   providers: [MessageService],
-  styleUrls: ['./user-create.component.scss']
+  styleUrls: ['./submission-create.component.scss']
 })
-export class UserCreateComponent implements OnInit {
+export class SubmissionCreateComponent implements OnInit {
 
   countries: any[];
   selectedCountry: string;
@@ -55,7 +55,7 @@ export class UserCreateComponent implements OnInit {
 
     cols: any[];
 
-  constructor(private route: ActivatedRoute, private messageService: MessageService, private userRest: UserRestService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private messageService: MessageService, private userRest: SubmissionRestService, private router: Router) { }
 
   ngOnInit() {
   this.cols = [

@@ -4,21 +4,18 @@ import { SubmissionListComponent } from './submission-list/submission-list.compo
 import {ClientsListComponent} from './clients-list/clients-list.component';
 import {CompaniesListComponent} from './companies-list/companies-list.component';
 import {ContactsListComponent} from './contacts-list/contacts-list.component';
-import {UserListComponent} from './user-list/user-list.component';
-import {UserCreateComponent} from './user-create/user-create.component';
 
-export const consultantsRoutes: Routes = [
-  {
-    path: '',
-    component: SubmissionListComponent
-  },
+import {SubmissionCreateComponent} from './submission-create/submission-create.component';
+
+export const submissionRoutes: Routes = [
   {
     path: 'list',
-    component: UserListComponent
+    component: SubmissionListComponent
   },
+
   {
     path: 'create',
-    component: UserCreateComponent
+    component: SubmissionCreateComponent
   },
   {
     path: 'clients',

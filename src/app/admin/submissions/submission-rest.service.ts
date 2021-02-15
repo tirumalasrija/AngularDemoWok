@@ -6,7 +6,7 @@ import { HttpParams } from "@angular/common/http";
 @Injectable({
   providedIn: 'root'
 })
-export class UserRestService {
+export class SubmissionRestService {
   users: Array<{ id: number, name: string, email: string }> = [];
   constructor(private http: HttpClient) { }
 

@@ -4,15 +4,14 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../auth.interceptor';
 import { RouterModule } from '@angular/router';
-import { consultantsRoutes } from  './consultants-routing.module'
+import { submissionRoutes } from  './submission-routing.module'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ButtonsModule, InputUtilitiesModule, InputsModule, MDBBootstrapModule } from 'angular-bootstrap-md';
 import { SubmissionListComponent } from './submission-list/submission-list.component';
 import {ClientsListComponent} from './clients-list/clients-list.component';
 import {ContactsListComponent} from './contacts-list/contacts-list.component';
 import {CompaniesListComponent} from './companies-list/companies-list.component';
-import {UserListComponent} from './user-list/user-list.component';
-import {UserCreateComponent} from './user-create/user-create.component';
+import {SubmissionCreateComponent} from './submission-create/submission-create.component';
 import { CustomerService } from '../../customer.service';
 import {AccordionModule} from 'primeng/accordion';
 import { ProductService } from '../../product.service';
@@ -41,15 +40,15 @@ import {InputMaskModule} from 'primeng/inputmask';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {DividerModule} from 'primeng/divider';
 import {TooltipModule} from 'primeng/tooltip';
-import { UserRestService } from './user-rest.service';
+import { SubmissionRestService } from './submission-rest.service';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {FieldPipe3} from '../../field3.pipe';
  @NgModule({
-  declarations: [SubmissionListComponent,CompaniesListComponent,ClientsListComponent,ContactsListComponent,UserListComponent,UserCreateComponent,FieldPipe3],
+  declarations: [SubmissionListComponent,CompaniesListComponent,ClientsListComponent,ContactsListComponent,SubmissionCreateComponent,FieldPipe3],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild(consultantsRoutes),
+    RouterModule.forChild(submissionRoutes),
     ButtonsModule,
     InputUtilitiesModule,
     InputsModule,
@@ -81,7 +80,7 @@ import {FieldPipe3} from '../../field3.pipe';
     MDBBootstrapModule.forRoot()
 
   ],
-  providers: [ProductService, MessageService, ConfirmationService,CustomerService,UserRestService,  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [ProductService, MessageService, ConfirmationService,CustomerService,SubmissionRestService,  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
 
   exports: [
     RouterModule

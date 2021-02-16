@@ -336,8 +336,6 @@ export class SubmissionCreateComponent implements OnInit {
     );
   }
   registerVendorCompany() {
-    console.log(this.registerVendor);
-
     const vendorDetails: VendorViewModel = new VendorViewModel(
       this.vendorCompanyName.value,
       this.contactName.value,
@@ -360,6 +358,8 @@ export class SubmissionCreateComponent implements OnInit {
 
       // Set this vendor contact as selected item
       this.selectedContacts = vendorContactId;
+
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Vendor Company Details Added' });
 
       // Hide modal
       this.displayModal = false;

@@ -4,7 +4,10 @@ import { SelectItem } from 'primeng/api';
 import { SelectItemGroup } from 'primeng/api';
 import { FormGroup, FormControlName, Validators, FormControl } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { SubmissionRestService} from '../submission-rest.service';
+import { SubmissionRestService } from '../submission-rest.service';
+import { VendorService } from '../../../services/vendor.service';
+import { VendorViewModel } from 'src/app/models/vendor/vendor';
+
 export class Profile {
   constructor(public prId: string, public prName: string) {
   }
@@ -51,22 +54,27 @@ export class SubmissionCreateComponent implements OnInit {
   registerClient: FormGroup;
 
   displayModalClient: boolean;
-    data: any[];
+  data: any[];
 
-    cols: any[];
+  cols: any[];
 
-  constructor(private route: ActivatedRoute, private messageService: MessageService, private userRest: SubmissionRestService, private router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private messageService: MessageService,
+    private userRest: SubmissionRestService,
+    private router: Router,
+    private vendorService: VendorService) { }
 
   ngOnInit() {
-  this.cols = [
-    { field: 'user_details.name', header: 'Created By', width: '20%', editable: false },
+    this.cols = [
+      { field: 'user_details.name', header: 'Created By', width: '20%', editable: false },
 
 
-        ];
+    ];
 
     this.userRest.getConsultantsList().subscribe(
       (response) => {
-       this.states = response.submissions;
+        this.states = response.submissions;
         this.vendors = response.vendorslist;
         this.clients = response.clients;
         this.data = response.data;
@@ -330,38 +338,34 @@ export class SubmissionCreateComponent implements OnInit {
   registerVendorCompany() {
     console.log(this.registerVendor);
 
-    this.userRest.storeVendor(this.registerVendor).subscribe(
-      response => {
-        console.log(response),
-          console.log(response.vendorId);
-        this.displayModal = false;
-        this.selectedVendors = response.vendorId;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Vendor Company Details Added' });
+    const vendorDetails: VendorViewModel = new VendorViewModel(
+      this.vendorCompanyName.value,
+      this.contactName.value,
+      this.contactMobile.value,
+      this.contactEmail.value,
+      this.ext.value);
 
-        this.userRest.getConsultantsList().subscribe(
-          (response1) => {
-            // console.log(this.states = response.submissions);
-            console.log(this.vendors = response1.vendorslist);
-            // console.log( this.clients =  response1.clients);
-          },
-          (error) => { console.log(error) }
-        );
-        this.userRest.editVenodr(response.vendorId).subscribe(
-          (response2) => {
-            this.contacts = response2.contacts;
-            this.selectedContacts = response.contactId;
-            this.ChangeContactsInner(response.contactId)
-          },
-          (error) => console.log(error)
-        );
+    this.vendorService.saveVendor(vendorDetails).subscribe((res: any) => {
+      // Push new vendor details to vendors list
+      const { vendor_company_id: vendorId, name: vendorName } = res.data;
+      this.vendors.push({ label: vendorName, value: vendorId });
 
+      // Set this vendor as selected item
+      this.selectedVendors = vendorId;
 
-        // this.router.navigate(['benchsales/list'])
-      },
-      error => {
-        this.serverErrors = error.error.errors
-      }
-    );
+      // Push new company contact detials to vendors contact details list
+      const { vendor_company_contact_id: vendorContactId, contactName: vendorContactName } = res.data.contacts[0];
+      this.contacts = [];
+      this.contacts.push({ label: vendorContactName, value: vendorContactId });
+
+      // Set this vendor contact as selected item
+      this.selectedContacts = vendorContactId;
+
+      // Hide modal
+      this.displayModal = false;
+    }, error => {
+      this.serverErrors = error.error.errors
+    });
   }
   registerUser() {
     console.log(this.registerForm);
@@ -374,15 +378,15 @@ export class SubmissionCreateComponent implements OnInit {
     this.userRest.storeUser(this.registerForm).subscribe(
       response => {
         this.registerForm.reset();
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Submission Completed' });
-          this.data = response.data;
-          this.crate='';
-          this.cemail='';
-          this.cmobile='';
-          this.ctechnology='';
-          this.vmobile='';
-          this.vcname='';
-          // this.router.navigate(['benchsales/list'])
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Submission Completed' });
+        this.data = response.data;
+        this.crate = '';
+        this.cemail = '';
+        this.cmobile = '';
+        this.ctechnology = '';
+        this.vmobile = '';
+        this.vcname = '';
+        // this.router.navigate(['benchsales/list'])
       },
       error => {
         this.serverErrors = error.error.errors

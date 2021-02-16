@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { SubmissionRestService } from '../submission-rest.service';
 import { VendorService } from '../../../services/vendor.service';
 import { VendorViewModel } from 'src/app/models/vendor/vendor';
+import { VendorContact } from 'src/app/models/vendor/vendor-contact';
 
 export class Profile {
   constructor(public prId: string, public prName: string) {
@@ -29,7 +30,7 @@ export class SubmissionCreateComponent implements OnInit {
   clients: SelectItem[];
   selectedCar: SelectItem;
   selectedStates: SelectItem;
-  selectedVendors: SelectItem;
+  selectedVendors: number;
   selectedContacts: SelectItem;
   selectedClients: SelectItem;
   str: string;
@@ -313,26 +314,25 @@ export class SubmissionCreateComponent implements OnInit {
     );
   }
   registerContactForm() {
+    const vendorCompany: VendorContact = new VendorContact(
+      this.vendorcontactName.value,
+      this.vendorcontactMobile.value,
+      this.vendorcontactEmail.value,
+      this.vendorext.value
+    );
+    this.vendorService.saveVendorContact(this.selectedVendors, vendorCompany).subscribe((response: any) => {
+      // Push new company contact detials to vendors contact details list
+      const { vendor_company_contact_id: vendorContactId, contactName: vendorContactName } = response.contact;
+      this.contacts.push({ label: vendorContactName, value: vendorContactId });
 
-    this.userRest.storeContact(this.registerContact).subscribe(
-      response => {
-        this.displayModal1 = false;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Vendor Contact Details Added' });
-        // this.selectedContacts = response.contactId;
-        this.userRest.editVenodr(this.registerForm.value.vid).subscribe(
-          (response2) => {
-            this.contacts = response2.contacts;
-            this.selectedContacts = response.contactId;
-            this.ChangeContactsInner(response.contactId)
-          },
-          (error) => console.log(error)
-        );
-        // this.ChangeContactsInner(response.contactId)
-        // this.router.navigate(['benchsales/list'])
-      },
-      error => {
-        this.serverErrors = error.error.errors
-      }
+      // Set this vendor contact as selected item
+      this.selectedContacts = vendorContactId;
+
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Vendor Contact Details Added' });
+
+      // Hide modal
+      this.displayModal1 = false;
+    }, error => this.serverErrors = error.error.errors
     );
   }
   registerVendorCompany() {

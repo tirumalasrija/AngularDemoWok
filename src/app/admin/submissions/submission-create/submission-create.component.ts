@@ -6,6 +6,7 @@ import { FormGroup, FormControlName, Validators, FormControl } from '@angular/fo
 import { MessageService } from 'primeng/api';
 import { SubmissionRestService } from '../submission-rest.service';
 import { VendorService } from '../../../services/vendor.service';
+import { ClientService } from '../../../services/client.service';
 import { VendorViewModel } from 'src/app/models/vendor/vendor';
 import { VendorContact } from 'src/app/models/vendor/vendor-contact';
 
@@ -32,7 +33,7 @@ export class SubmissionCreateComponent implements OnInit {
   selectedStates: SelectItem;
   selectedVendors: number;
   selectedContacts: SelectItem;
-  selectedClients: SelectItem;
+  selectedClients: number;
   str: string;
   counter = 0;
   totalNumberOfCars: number;
@@ -64,7 +65,8 @@ export class SubmissionCreateComponent implements OnInit {
     private messageService: MessageService,
     private userRest: SubmissionRestService,
     private router: Router,
-    private vendorService: VendorService) { }
+    private vendorService: VendorService,
+    private clientService: ClientService) { }
 
   ngOnInit() {
     this.cols = [
@@ -299,14 +301,18 @@ export class SubmissionCreateComponent implements OnInit {
   get scheduleDate() { return this.registerContact.get('scheduleDate'); }
   get timezone() { return this.registerContact.get('timezone'); }
   registerClientForm() {
-    this.userRest.storeClient(this.registerClient).subscribe(
-      response => {
-        this.displayModalClient = false;
+    this.clientService.saveClient(this.clientName.value).subscribe(
+      (response: any) => {
+        // Push new Client detials to Clients list
+        const { client_id: clientId, name: clientName } = response.client;
+        this.clients.push({ label: clientName, value: clientId });
+
+        // Set this vendor contact as selected item
+        this.selectedClients = clientId;
+
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Client Added' });
-        this.clients = response.clients;
-        this.selectedClients = response.clientId;
-        // this.ChangeContactsInner(response.contactId)
-        // this.router.navigate(['benchsales/list'])
+
+        this.displayModalClient = false;
       },
       error => {
         this.serverErrors = error.error.errors

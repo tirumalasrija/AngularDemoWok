@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../admin/auth.interceptor';
+import { UserProfileService } from '../services/user-profile-service';
 
 @NgModule({
   declarations: [
@@ -19,18 +20,19 @@ import { AuthInterceptor } from '../admin/auth.interceptor';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild(AuthRoutes),    
+    RouterModule.forChild(AuthRoutes),
     InputUtilitiesModule,
     CheckboxModule,
     IconsModule,
     ButtonsModule,
     CardsModule,
-    InputsModule,   
+    InputsModule,
     //StoreModule.forRoot(reducers) 
   ],
-  providers:[
+  providers: [
     AuthService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    UserProfileService
   ]
 })
 

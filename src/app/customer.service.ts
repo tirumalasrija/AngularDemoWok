@@ -26,6 +26,11 @@ export class CustomerService {
       })
       .then(data => { return data; });
   }
+
+  getConsultantSubmissions(consultantId: number) {
+    return this.http.get<any>(`${environment.api}/api/consultant/${consultantId}/submissions`);
+  }
+
   getHotlistConsultants() {
     return this.http.get<any>(`${environment.api}/api/getHotList`)
       .toPromise()

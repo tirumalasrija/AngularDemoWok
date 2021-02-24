@@ -306,4 +306,13 @@ export class DocumentListComponent implements OnInit {
       });
     }
   }
+
+  onRowExpand(event) {
+    const consultantId: number = event.data.consultant_id;
+    this.consultantService.getConsultantSubmissions(consultantId).subscribe(consultantSubmissions => {
+      event.data.submissions = consultantSubmissions;
+    }, error => {
+      event.data.submissions = [];
+    });
+  }
 }

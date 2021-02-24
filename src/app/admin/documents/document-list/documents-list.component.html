@@ -161,7 +161,8 @@
 [lazy]="true" (onLazyLoad)="loadConsultants($event)" [rows]="5" [totalRecords]="totalRecords" 
 [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,50]"
   [autoLayout]="true" [loading]="loading" [paginator]="true"
-  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} consultants">
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} consultants"
+  (onRowExpand)="onRowExpand($event)">
   <ng-template pTemplate="caption">
 
     <div class="p-d-flex">

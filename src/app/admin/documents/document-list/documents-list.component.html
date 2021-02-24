@@ -157,7 +157,9 @@
 </p-dialog>
 <p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" [position]="position" [baseZIndex]="10000">
 </p-confirmDialog>
-<p-table [value]="consultants" dataKey="name" [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,50]"
+<p-table [value]="consultants" dataKey="name" 
+[lazy]="true" (onLazyLoad)="loadConsultants($event)" [rows]="5" [totalRecords]="totalRecords" 
+[showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,50]"
   [autoLayout]="true" [loading]="loading" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} consultants">
   <ng-template pTemplate="caption">

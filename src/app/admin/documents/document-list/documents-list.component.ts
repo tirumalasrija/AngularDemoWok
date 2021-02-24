@@ -11,25 +11,25 @@ import { ConsultantDetail } from '../../../product';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { Message } from 'primeng/api';
-import {SelectItem} from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { trigger,state,style,transition,animate } from '@angular/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 @Component({
   selector: 'app-documents-list',
   templateUrl: './documents-list.component.html',
   animations: [
     trigger('rowExpansionTrigger', [
-        state('void', style({
-            transform: 'translateX(-10%)',
-            opacity: 0
-        })),
-        state('active', style({
-            transform: 'translateX(0)',
-            opacity: 1
-        })),
-        transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+      state('void', style({
+        transform: 'translateX(-10%)',
+        opacity: 0
+      })),
+      state('active', style({
+        transform: 'translateX(0)',
+        opacity: 1
+      })),
+      transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
     ])
-],
+  ],
   styleUrls: ['./documents-list.component.scss']
 })
 export class DocumentListComponent implements OnInit {
@@ -57,6 +57,11 @@ export class DocumentListComponent implements OnInit {
   position: string;
   successResult: any;
   serverErrors: any;
+
+  totalRecords: number = 0;
+  currentPage: number = 0;
+  pageSize: number = 0;
+
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private store: Store<AuthState>, private consultantService: CustomerService) {
 
   }
@@ -119,19 +124,15 @@ export class DocumentListComponent implements OnInit {
       'otherDocument': new FormControl(null),
       'workAuthorization': new FormControl(null)
     })
-    this.consultantService.getDocumentConsultants().then(consultants => {
-      this.consultants = consultants;
-      this.loading = false;
 
-    });
     this.consultantService.getTechnologies().then(technologies => {
       //this.technologies.push({ technology_id:0,name:'Choose Technology',created_at:'' });
-      this.technologies=technologies;
+      this.technologies = technologies;
 
     });
     this.consultantService.getOnlyTechnologies().then(technologies => {
       //this.technologies.push({ technology_id:0,name:'Choose Technology',created_at:'' });
-      this.technologiesforflter=technologies;
+      this.technologiesforflter = technologies;
 
     });
 
@@ -254,7 +255,7 @@ export class DocumentListComponent implements OnInit {
   editProduct(consultantObj: Consultant) {
     this.consultantForm.patchValue({ ...consultantObj });
     this.consultant = { ...consultantObj };
-     this.consultantDialog = true;
+    this.consultantDialog = true;
   }
   deleteProduct(consultantObj: Consultant) {
     this.confirmationService.confirm({
@@ -289,8 +290,20 @@ export class DocumentListComponent implements OnInit {
     });
   }
 
+  loadConsultants(event) {
+    const size: number = event.rows;
+    const page: number = (event.first / size) + 1;
 
+    // Ignore filter changes for now
+    if (this.currentPage !== page || this.pageSize !== size) {
+      this.currentPage = page;
+      this.pageSize = size;
 
-
-
+      this.consultantService.getDocumentConsultants(page, size).then(pagedConsultants => {
+        this.consultants = pagedConsultants.consultants;
+        this.totalRecords = pagedConsultants.totalRecords;
+        this.loading = false;
+      });
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Consultant, Technology, HotList,Client,Contact,Submission } from './customer';
+import { Consultant, Technology, HotList, Client, Contact, Submission, PagedConsultant } from './customer';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
 @Injectable()
@@ -15,10 +15,15 @@ export class CustomerService {
       .then(res => <Consultant[]>res.consultants)
       .then(data => { return data; });
   }
-  getDocumentConsultants() {
-    return this.http.get<any>(`${environment.api}/api/consultants`)
+  getDocumentConsultants(page, size) {
+    return this.http.get<any>(`${environment.api}/api/consultants?page=${page}&take=${size}`)
       .toPromise()
-      .then(res => <Consultant[]>res.consultants)
+      .then(res => {
+        return <PagedConsultant>{
+          consultants: res.data.data,
+          totalRecords: res.data.total
+        };
+      })
       .then(data => { return data; });
   }
   getHotlistConsultants() {

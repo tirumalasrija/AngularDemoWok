@@ -112,3 +112,9 @@ export interface Consultant {
   date?: string | Date;
   created_at?: string | Date;
 }
+
+
+export interface PagedConsultant {
+  totalRecords: number;
+  consultants: Consultant[];
+}

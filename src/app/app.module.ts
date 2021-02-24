@@ -14,7 +14,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { StudyComponent } from './study/study.component';
 import { ChildStudyComponent } from './study/child-study/child-study.component';
 import { AuthEffects } from './auth/store/auth.effects';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { CanUserAccessDirective } from './core/directives/can-user-access.directive';
 
 @NgModule({
   declarations: [
@@ -23,9 +25,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     NotfoundComponent,
     StudyComponent,
     ChildStudyComponent,
+    CanUserAccessDirective
   ],
   imports: [
-    BrowserModule,BrowserAnimationsModule,
+    BrowserModule, BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -41,7 +44,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects]),
   ],
-
+  
 
   bootstrap: [AppComponent]
 })

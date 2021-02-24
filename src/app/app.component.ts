@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { State } from './auth/store/auth.reducers';
 import { Store } from '@ngrx/store';
 import { AuthState } from './store/app.reducers';
-
+import { VendorSubmissions } from './core/models/permissions';
 
 @Component({
   selector: 'app-root',
@@ -12,18 +12,18 @@ import { AuthState } from './store/app.reducers';
 
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'Webmobilez';
-  isAuthnoticated : Observable<State>;
+  isAuthnoticated: Observable<State>;
 
-
-  constructor(private store: Store<AuthState>){}
-
-  ngOnInit(): void {
-        this.isAuthnoticated = this.store.select('authState');
-
+  get VendorSubmissionsPermissions() {
+    return VendorSubmissions;
   }
 
+  constructor(private store: Store<AuthState>) { }
 
+  ngOnInit(): void {
+    this.isAuthnoticated = this.store.select('authState');
 
+  }
 }

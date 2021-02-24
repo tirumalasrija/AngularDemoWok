@@ -43,6 +43,7 @@ import {TooltipModule} from 'primeng/tooltip';
 import { SubmissionRestService } from './submission-rest.service';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {FieldPipe3} from '../../field3.pipe';
+import { PermissionGuard } from 'src/app/core/guards/permission.guard';
  @NgModule({
   declarations: [SubmissionListComponent,CompaniesListComponent,ClientsListComponent,ContactsListComponent,SubmissionCreateComponent,FieldPipe3],
   imports: [
@@ -80,7 +81,7 @@ import {FieldPipe3} from '../../field3.pipe';
     MDBBootstrapModule.forRoot()
 
   ],
-  providers: [ProductService, MessageService, ConfirmationService,CustomerService,SubmissionRestService,  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [ProductService, MessageService, ConfirmationService,CustomerService,SubmissionRestService,  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, PermissionGuard],
 
   exports: [
     RouterModule

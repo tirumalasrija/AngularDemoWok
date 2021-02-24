@@ -10,7 +10,7 @@ export class PermissionGuard implements CanActivate {
     ) { }
 
     canActivate(route: ActivatedRouteSnapshot) {
-        const canUserAccessRoute = this.userProfileService.hasPermissions(route?.data?.permission);
+        const canUserAccessRoute = this.userProfileService.hasPermission(route?.data?.permission);
         if (!canUserAccessRoute) {
             alert("You do not have permissions for this action. Please contact your administrator.");
             this.router.navigate(['/']);

@@ -17,7 +17,7 @@ export class UserProfileService {
         this.saveUserProfileToLocalStorage();
     }
 
-    hasPermissions(permission: string) {
+    hasPermission(permission: string) {
         return this.userProfile.permissions?.includes(permission);
     }
 

@@ -26,4 +26,18 @@ export class AppComponent implements OnInit {
     this.isAuthnoticated = this.store.select('authState');
 
   }
+    logout(): void {
+    let token = localStorage.getItem('token');
+    let user_id = localStorage.getItem('user_id');
+    console.log(token + " " + user_id);
+    this.authService.logOutUser(user_id).subscribe(
+      response => {
+        console.log(response);
+        localStorage.clear();
+        this.store.dispatch(new AuthActions.Logout());
+        this.router.navigate(['/login']);
+      },
+      err => { console.log(err); }
+    )
+  }
 }

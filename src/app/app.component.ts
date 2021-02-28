@@ -3,6 +3,9 @@ import { Observable } from 'rxjs';
 import { State } from './auth/store/auth.reducers';
 import { Store } from '@ngrx/store';
 import { AuthState } from './store/app.reducers';
+import { DashboarService } from './admin/dashboar.service';
+import * as AuthActions from './auth/store/auth.actions';
+import { Router } from '@angular/router';
 import { VendorSubmissions } from './core/models/permissions';
 
 @Component({
@@ -20,7 +23,7 @@ export class AppComponent implements OnInit {
     return VendorSubmissions;
   }
 
-  constructor(private store: Store<AuthState>) { }
+  constructor(private router: Router, private store: Store<AuthState>, private authService: DashboarService) { }
 
   ngOnInit(): void {
     this.isAuthnoticated = this.store.select('authState');

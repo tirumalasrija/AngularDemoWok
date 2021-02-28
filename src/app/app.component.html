@@ -79,7 +79,7 @@
 
         </div>
       </li>
-      <li class="nav-item dropdown" *ngIf="(isAuthnoticated | async).authonticated" dropdown>
+      <li class="nav-item dropdown" *canUserAccess="VendorSubmissionsPermissions.UsersList" dropdown>
         <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
           <mdb-icon fas icon="user"></mdb-icon> Users<span class="caret"></span>
         </a>

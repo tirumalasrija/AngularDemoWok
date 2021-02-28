@@ -28,7 +28,8 @@ export class CanUserAccessDirective implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.userStateSubscription = this.userState?.subscribe((data: any) => {
-            if (!data.authonticated || (data.authonticated && data.authToken)) {
+            const { authonticated: isUserAuthenticated, authToken: hasAuthToken } = data;
+            if (!isUserAuthenticated || (isUserAuthenticated && hasAuthToken)) {
                 this.setTemplate();
             }
         });

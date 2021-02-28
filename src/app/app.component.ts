@@ -7,6 +7,7 @@ import { DashboarService } from './admin/dashboar.service';
 import * as AuthActions from './auth/store/auth.actions';
 import { Router } from '@angular/router';
 import { VendorSubmissions } from './core/models/permissions';
+import { UserProfileService } from './services/user-profile-service';
 
 @Component({
   selector: 'app-root',
@@ -23,13 +24,20 @@ export class AppComponent implements OnInit {
     return VendorSubmissions;
   }
 
-  constructor(private router: Router, private store: Store<AuthState>, private authService: DashboarService) { }
+  constructor(
+    private router: Router,
+    private store: Store<AuthState>,
+    private authService: DashboarService,
+    private userProfileService: UserProfileService) { }
 
   ngOnInit(): void {
     this.isAuthnoticated = this.store.select('authState');
 
   }
-    logout(): void {
+
+  logout(): void {
+    this.userProfileService.logout();
+    
     let token = localStorage.getItem('token');
     let user_id = localStorage.getItem('user_id');
     console.log(token + " " + user_id);

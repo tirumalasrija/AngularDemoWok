@@ -71,7 +71,7 @@
         <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
           <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/submissions' ]">Submissions
             List</a>
-          <a class="dropdown-item waves-light" *canUserAccess="VendorSubmissionsPermissions.ClientList" mdbWavesEffect [routerLink]="[ '/submissions/clients' ]">Clients List</a>
+          <a class="dropdown-item waves-light" *canUserAccess="VendorSubmissionsPermissions.ClientList; userState: isAuthnoticated" mdbWavesEffect [routerLink]="[ '/submissions/clients' ]">Clients List</a>
           <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/submissions/companies' ]">Vendors Company
             List</a>
           <a class="dropdown-item waves-light" mdbWavesEffect [routerLink]="[ '/submissions/contacts' ]">Vendors Contact
@@ -79,7 +79,7 @@
 
         </div>
       </li>
-      <li class="nav-item dropdown" *canUserAccess="VendorSubmissionsPermissions.UsersList" dropdown>
+      <li class="nav-item dropdown" *canUserAccess="VendorSubmissionsPermissions.UsersList; userState: isAuthnoticated" dropdown>
         <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
           <mdb-icon fas icon="user"></mdb-icon> Users<span class="caret"></span>
         </a>

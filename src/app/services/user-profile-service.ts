@@ -18,7 +18,11 @@ export class UserProfileService {
     }
 
     hasPermission(permission: string) {
-        return this.userProfile.permissions?.includes(permission);
+        return this.userProfile?.permissions?.includes(permission);
+    }
+
+    logout() {
+        this.userProfile = null;
     }
 
     private saveUserProfileToLocalStorage() {

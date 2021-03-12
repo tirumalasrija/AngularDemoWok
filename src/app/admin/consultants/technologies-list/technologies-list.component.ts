@@ -1,174 +1,112 @@
 
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { Observable } from 'rxjs';
-import { State } from '../../../auth/store/auth.reducers';
-import { Store } from '@ngrx/store';
-import { AuthState } from '../../../store/app.reducers';
-import { Customer, Representative, Consultant, Technology, User } from "../../../customer";
-import { CustomerService } from "../../../customer.service";
+import { Component, OnInit } from '@angular/core';
+import { Technology } from "../../../customer";
 import { Table } from 'primeng/table';
-import { ConsultantDetail } from '../../../product';
-import { MessageService } from 'primeng/api';
-import { ConfirmationService } from 'primeng/api';
-import { Message } from 'primeng/api';
+import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { NotificationService } from './../../../services/notification-service';
+import { TechnologyService } from './technology-service';
 
-import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 @Component({
   selector: 'app-technologies-list',
   templateUrl: './technologies-list.component.html',
   styleUrls: ['./technologies-list.component.scss']
 })
+
 export class TechnologiesListComponent implements OnInit {
 
-  title = 'Webmobilez';
-  isAuthnoticated: Observable<State>;
-  technologiesForm: FormGroup;
+  // Technologies List
   technologies: Technology[];
-  technology : Technology;
-  statuses: any[];
   loading: boolean = true;
-  submitted: boolean;
-  technologyDialog: boolean;
-  msgs: Message[] = [];
-  position: string;
-  successResult: any;
-  serverErrors: any;
-  technologyButton:string;
-  constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private store: Store<AuthState>, private consultantService: CustomerService) {
 
+  // Technology Form
+  technologiesForm: FormGroup = this.buildTechnologyForm();
+  technologyId: number;
+  submitted: boolean;
+  openTechnologyDialog: boolean;
+  technologyButtonText: string;
+
+  constructor(
+    private readonly notificationService: NotificationService,
+    private readonly technologyService: TechnologyService) {
   }
 
   get name() { return this.technologiesForm.get('name'); }
 
-
   ngOnInit(): void {
-
-    this.isAuthnoticated = this.store.select('authState');
-
-    this.technologiesForm = new FormGroup({
-      'name': new FormControl(null, [Validators.required, Validators.minLength(2)]),
-    })
-    this.consultantService.getTechnologies().then(technologies => {
+    this.technologyService.getTechnologies().then(technologies => {
       this.technologies = technologies;
       this.loading = false;
-
     });
-
-
   }
-
-
-
 
   clear(table: Table) {
     table.clear();
   }
 
-  //create Consultant
-  openNew() {
-    this.technologyButton ="Add Technology";
+  openAddTechnologyDialog() {
     this.technologiesForm.reset();
-    this.technology = {};
+
+    this.technologyButtonText = "Add Technology";
     this.submitted = false;
-    this.technologyDialog = true;
+    this.openTechnologyDialog = true;
   }
-  updateConsultantDetails() {
 
-    if (this.technologiesForm.valid) {
-      this.submitted = true;
-    } else {
-      this.submitted = false;
-    }
+  openEditTechnologyDialog(tecnology: Technology) {
+    this.technologiesForm.reset();
 
-    if (this.technology.technology_id) {
-      this.consultantService.updateTechnology(this.technologiesForm, this.technology.technology_id).subscribe(data => {
-        this.successResult = data;
-        this.technologies[this.findIndexById( data.technology.technology_id)] = data.technology;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Technology Updated', life: 3000 });
-      }, err => {
-        this.serverErrors = err.error;
-      });
-      // this.consultants[this.findIndexById(this.consultant.consultant_id)] = this.consultant;
-
-
-    }
-    else {
-
-
-      this.consultantService.storeTechnology(this.technologiesForm).subscribe(data => {
-        this.technologiesForm.reset();
-        this.successResult = data;
-        this.technologies.push(data.technology);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Technology Created', life: 3000 });
-        //  this.consultantForm.reset();
-        console.log(data);
-      }, err => {
-        this.serverErrors = err.error;
-      });
-      // this.consultant.consultant_id = this.createId();
-
-
-    }
-
-    this.technologies = [...this.technologies];
-    this.technologyDialog = false;
-    this.technology = {};
-
-  }
-  findIndexById(id: number): number {
-    let index = -1;
-    for (let i = 0; i < this.technologies.length; i++) {
-      if (this.technologies[i].technology_id === id) {
-        index = i;
-        break;
-      }
-    }
-
-    return index;
-  }
-  hideDialog() {
-    console.log(this.technologiesForm);
-    this.technologyDialog = false;
+    this.technologyButtonText = "Update Technology";
     this.submitted = false;
-  }
-  editProduct(consultantObj: Technology) {
-    this.technologyButton ="Update Technology";
-    this.technologiesForm.patchValue({ ...consultantObj });
 
-    this.technology = { ...consultantObj };
-    console.log(this.technology)
-     this.technologyDialog = true;
+    this.technologiesForm.patchValue({
+      name: tecnology.name
+    });
+
+    this.technologyId = tecnology.technology_id;
+    this.openTechnologyDialog = true;
   }
-  deleteProduct(consultantObj: Technology) {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + consultantObj.name + '?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.technologies = this.technologies.filter(val => val.technology_id !== consultantObj.technology_id);
-        //this.consultant = {};
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Consultant Deleted', life: 3000 });
-      }
+
+  saveTechnology() {
+    this.submitted = true;
+
+    const technologyName = this.name.value;
+
+    // Update Existing Technology
+    if (this.technologyId) {
+      this.technologyService.updateTechnology(this.technologyId, technologyName).then(technology => {
+
+        const index = this.technologies.findIndex(item => {
+          return item.technology_id === this.technologyId;
+        });
+        this.technologies[index] = technology;
+
+        this.notificationService.showSuccess('Technology Updated');
+      }).catch(err => {
+        this.notificationService.showError('Failed to Update Technology.!!');
+      }).finally(() => {
+        this.resetTechnologyDialog();
+      });
+    }
+    else {  // Save New Technology
+      this.technologyService.storeTechnology(technologyName).then(technology => {
+        this.technologies.push(technology);
+
+        this.notificationService.showSuccess('Technology Created');
+      }).catch(err => {
+        this.notificationService.showError('Failed to Create Technology.!!');
+      }).finally(() => {
+        this.resetTechnologyDialog();
+      });
+    }
+  }
+
+  private buildTechnologyForm() {
+    return new FormGroup({
+      'name': new FormControl(null, [Validators.required, Validators.minLength(2)]),
     });
   }
 
-
-
-  confirmPosition(position: string) {
-    this.position = position;
-
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to proceed?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.messageService.add({ severity: 'success', summary: 'Successful Approved', detail: 'Consultant Approved to HotList', life: 3000 });
-        //  this.msgs = [{severity:'info', summary:'Confirmed', detail:'Holtlisted'}];
-      },
-      reject: () => {
-        //this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];
-      },
-      key: "positionDialog"
-    });
+  private resetTechnologyDialog() {
+    this.technologyId = null;
+    this.openTechnologyDialog = false;
   }
 }

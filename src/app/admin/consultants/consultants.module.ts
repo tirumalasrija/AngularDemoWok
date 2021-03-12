@@ -39,6 +39,8 @@ import {InputMaskModule} from 'primeng/inputmask';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {DividerModule} from 'primeng/divider';
 import {TooltipModule} from 'primeng/tooltip';
+import { TechnologyService } from './technologies-list/technology-service';
+import { NotificationService } from 'src/app/services/notification-service';
 
 @NgModule({
   declarations: [ConsultantListComponent, WelcomeComponent,TechnologiesListComponent,HotListComponent],
@@ -77,7 +79,7 @@ import {TooltipModule} from 'primeng/tooltip';
     MDBBootstrapModule.forRoot()
 
   ],
-  providers: [ProductService, MessageService, ConfirmationService,CustomerService,  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [ProductService, MessageService, ConfirmationService,CustomerService,  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, TechnologyService, NotificationService],
 
   exports: [
     RouterModule
